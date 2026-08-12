@@ -1,9 +1,19 @@
-# relics
+# Meßy's Relics
 
-## Setup
+Open-source version of a vanilla plugin that I wrote for the DougDoug SMP server
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Status
+ Early development — not yet released.
+
+## Features
+- Randomly generated loot-box-like items
+- Customizable loot-tables
 
 ## License
+This project is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+You are free to use, modify, and share this mod, including modified versions,
+as long as you:
+- Give appropriate credit
+- Do not use it for commercial purposes (no selling this mod or modified versions)
+- Share any modified versions under this same license
