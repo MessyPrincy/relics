@@ -3,13 +3,13 @@
 	"id": "relics",
 	"version": "${version}",
 	"name": "relics",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A mod that lets server owners create custom tables of items that players pick up through opening randomly spawning relics",
 	"authors": [
-		"Me!"
+		"MessyPrincy"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/MessyPrincy/relics"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/relics/icon.png",
