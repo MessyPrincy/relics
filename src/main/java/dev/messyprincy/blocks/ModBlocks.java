@@ -32,7 +32,7 @@ public class ModBlocks {
     }
 
     public static final Block RELIC = register(
-            new Block(BlockBehaviour.Properties.of().sound(SoundType.AMETHYST)),
+            new RelicBlock(BlockBehaviour.Properties.of().sound(SoundType.AMETHYST)),
             "relic",
             true
     );

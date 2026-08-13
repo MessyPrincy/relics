@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "charge=0": { "model": "relics:block/relic_charge_0" },
+    "charge=1": { "model": "relics:block/relic_charge_1" },
+    "charge=2": { "model": "relics:block/relic_charge_2" },
+    "charge=3": { "model": "relics:block/relic_charge_3" },
+    "charge=4": { "model": "relics:block/relic_charge_4" }
+  }
+}
