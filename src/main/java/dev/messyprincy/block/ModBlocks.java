@@ -1,6 +1,6 @@
-package dev.messyprincy.blocks;
+package dev.messyprincy.block;
 
-import dev.messyprincy.ModCreativeTabs;
+import dev.messyprincy.registry.ModCreativeTabs;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

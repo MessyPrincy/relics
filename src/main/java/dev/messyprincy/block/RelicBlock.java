@@ -1,6 +1,6 @@
-package dev.messyprincy.blocks;
+package dev.messyprincy.block;
 
-import dev.messyprincy.items.ModItems;
+import dev.messyprincy.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 public class RelicBlock extends Block {
     public static final IntegerProperty CHARGE = IntegerProperty.create("charge", 0, 4);
@@ -31,8 +32,8 @@ public class RelicBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level, BlockPos blockPos,
-                                          Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level, BlockPos blockPos,
+                                                       Player player, InteractionHand hand, BlockHitResult hitResult) {
         int charge = state.getValue(CHARGE);
 
         if (item.is(ModItems.VOID_TRACE)) {
@@ -69,6 +70,6 @@ public class RelicBlock extends Block {
 
     private void dropLoot(ServerLevel level, BlockPos blockPos, int charge, Player player) {
 
-        Block.popResource(level, blockPos, new ItemStack(net.minecraft.world.item.Items.DIRT));
+        Block.popResource(level, blockPos, new ItemStack(ModItems.VOID_TRACE));
     }
 }

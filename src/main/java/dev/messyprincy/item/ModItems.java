@@ -1,6 +1,6 @@
-package dev.messyprincy.items;
+package dev.messyprincy.item;
 
-import dev.messyprincy.ModCreativeTabs;
+import dev.messyprincy.registry.ModCreativeTabs;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +31,7 @@ public class ModItems {
     );
 
     public static final Item VOID_TRACE = register(
-            new Item(new Item.Properties()),
+            new VoidTraceItem(new Item.Properties()),
             "void_trace"
     );
 

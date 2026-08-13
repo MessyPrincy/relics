@@ -1,7 +1,7 @@
-package dev.messyprincy;
+package dev.messyprincy.registry;
 
-import dev.messyprincy.blocks.ModBlocks;
-import dev.messyprincy.items.ModItems;
+import dev.messyprincy.block.ModBlocks;
+import dev.messyprincy.item.ModItems;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
