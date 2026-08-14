@@ -8,4 +8,5 @@ public class RelicConfig {
     public int spawnRadiusMax = 40;
     public List<String> allowedDimensions = List.of("minecraft:overworld");
     public int commandPermissionLevel = 2;
+    // Add hashmap of [Categories - %] so users can customize how many categories they want
 }
