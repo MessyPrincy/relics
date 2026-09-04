@@ -41,7 +41,7 @@ public class RelicCommands {
                                                 return 0;
                                             }
 
-                                            if (tier.equals("bronze") || tier.equals("silver") || tier.equals("gold")) {
+                                            if (RelicConfigManager.get().tiers.containsKey(tier)) {
                                                 LootTierData data = LootTierManager.load(tier);
 
                                                 var registryOps = RegistryOps.create(
@@ -64,7 +64,7 @@ public class RelicCommands {
                                                 ctx.getSource().sendSuccess(() -> Component.literal("Added item to " + tier + " loot."), true);
                                                 return 1;
                                             } else {
-                                                ctx.getSource().sendFailure(Component.literal("Invalid tier. Use bronze, silver, or gold."));
+                                                ctx.getSource().sendFailure(Component.literal("Invalid tier. Use " + RelicConfigManager.get().tiers.keySet()));
                                                 return 0;
                                             }
                                         })
