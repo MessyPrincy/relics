@@ -1,7 +1,12 @@
 package dev.messyprincy.block;
 
+import com.google.gson.JsonElement;
+import dev.messyprincy.config.RelicConfig;
+import dev.messyprincy.config.RelicConfigManager;
 import dev.messyprincy.item.ModItems;
+import dev.messyprincy.loot.LootRoller;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -54,7 +59,7 @@ public class RelicBlock extends Block {
 
         if (item.is(ModItems.RELIC_KEY)) {
             if (level instanceof ServerLevel serverLevel) {
-                dropLoot(serverLevel, blockPos, charge, player);
+                dropLoot(serverLevel, blockPos, charge);
                 level.removeBlock(blockPos, false);
 
                 if (!player.getAbilities().instabuild) {
@@ -68,8 +73,12 @@ public class RelicBlock extends Block {
         return super.useItemOn(item, state, level, blockPos, player, hand, hitResult);
     }
 
-    private void dropLoot(ServerLevel level, BlockPos blockPos, int charge, Player player) {
+    private void dropLoot(ServerLevel level, BlockPos blockPos, int charge) {
+        RegistryOps<JsonElement> registryOps = level.registryAccess().createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE);
+        RelicConfig config = RelicConfigManager.get();
 
-        Block.popResource(level, blockPos, new ItemStack(ModItems.VOID_TRACE));
+        ItemStack item = LootRoller.rollItem(registryOps, config.tiers, charge);
+
+        Block.popResource(level, blockPos, item);
     }
 }
