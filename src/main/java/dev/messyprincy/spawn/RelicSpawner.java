@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -40,18 +41,33 @@ public class RelicSpawner {
     public static void resetTimer(MinecraftServer server) {
         RelicConfig config = RelicConfigManager.get();
 
-        int validPlayers = Math.toIntExact(PlayerLookup.all(server)
+        ticksUntilSpawn = (config.spawnIntervalSeconds * 20) / Math.max(1, getValidPlayers(server).size());
+    }
+
+    private static List<ServerPlayer> getValidPlayers (MinecraftServer server) {
+        return PlayerLookup.all(server)
                 .stream()
                 .filter(serverPlayer -> {
                     ResourceKey<Level> playerLevel = serverPlayer.level().dimension();
 
                     return validDimensions.contains(playerLevel);
-                }).count());
-
-        ticksUntilSpawn = (config.spawnIntervalSeconds * 20) / Math.max(1, validPlayers);
+                })
+                .filter(serverPlayer -> !serverPlayer.isSpectator())
+                .toList();
     }
 
     private static void trySpawn(MinecraftServer server) {
+        if (validDimensions.isEmpty()) {
+            Relics.LOGGER.error("No valid dimensions, skipping relic spawn");
+            return;
+        }
+
+        List<ServerPlayer> validPlayers = getValidPlayers(server);
+        if (validPlayers.isEmpty()) {
+            Relics.LOGGER.error("No valid players, skipping relic spawn");
+            return;
+        }
+
         Relics.LOGGER.info("Spawn relic");
     }
 
