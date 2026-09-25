@@ -5,6 +5,7 @@ import dev.messyprincy.command.RelicCommands;
 import dev.messyprincy.config.RelicConfigManager;
 import dev.messyprincy.item.ModItems;
 import dev.messyprincy.registry.ModCreativeTabs;
+import dev.messyprincy.spawn.RelicSpawner;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -23,12 +24,13 @@ public class Relics implements ModInitializer {
 		ModBlocks.initialize();
 		ModItems.initialize();
 		ModCreativeTabs.initialize();
+		RelicSpawner.initialize();
 
 		CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
 			RelicCommands.register(dispatcher);
 		}));
 
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Loaded Meßy's Relics");
 	}
 
 	public static ResourceLocation id(String path) {

@@ -2,8 +2,10 @@ package dev.messyprincy.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import dev.messyprincy.Relics;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -33,13 +35,26 @@ public class RelicConfigManager {
 
         try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
             RelicConfig loaded = GSON.fromJson(reader, RelicConfig.class);
-            if (isPercentValid(loaded)) {
-                config = loaded;
-            } else {
-                Relics.LOGGER.error("Invalid relics.json. Tiers do not sum up to 100%. Falling back to defaults");
+            if (loaded == null) {
+                Relics.LOGGER.error("Relics.json is empty. Falling back to default config");
                 config = new RelicConfig();
+                return;
             }
-        } catch (IOException e) {
+
+            if (!(isPercentValid(loaded))) {
+                Relics.LOGGER.error("Invalid relics.json. Tiers do not sum up to 100%. Falling back to default config");
+                config = new RelicConfig();
+                return;
+            }
+
+            if (!(sanitizeDimensions(loaded))) {
+                Relics.LOGGER.error("Empty dimension list. Falling back to default dimension.");
+                loaded.allowedDimensions = new RelicConfig().allowedDimensions;
+            }
+
+            config = loaded;
+        } catch (IOException | JsonSyntaxException e) {
+            Relics.LOGGER.error("Error {}\nFalling back to default config", e.getMessage());
             config = new RelicConfig();
         }
     }
@@ -48,6 +63,11 @@ public class RelicConfigManager {
         if (!isPercentValid(config)) {
             Relics.LOGGER.error("Invalid relics.json. Tiers do not sum up to 100%. Refusing to save.");
             return;
+        }
+
+        if (!sanitizeDimensions(config)) {
+            Relics.LOGGER.error("Empty dimension list. Falling back to default dimension.");
+            config.allowedDimensions = new RelicConfig().allowedDimensions;
         }
 
         try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
@@ -69,5 +89,19 @@ public class RelicConfigManager {
                 .sum();
 
         return needed_percent == config_percent;
+    }
+
+    private static boolean sanitizeDimensions(RelicConfig testedConfig) {
+        if (testedConfig.allowedDimensions == null) {
+            return false;
+        }
+
+        testedConfig.allowedDimensions.removeIf(dimension -> {
+            boolean invalid = ResourceLocation.tryParse(dimension) == null;
+            if (invalid) Relics.LOGGER.error("{} is invalid. Removing the dimension", dimension);
+            return invalid;
+        });
+
+        return !testedConfig.allowedDimensions.isEmpty();
     }
 }

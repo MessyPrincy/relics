@@ -6,6 +6,7 @@ import com.mojang.serialization.JsonOps;
 import dev.messyprincy.config.RelicConfigManager;
 import dev.messyprincy.loot.LootTierData;
 import dev.messyprincy.loot.LootTierManager;
+import dev.messyprincy.spawn.RelicSpawner;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -18,9 +19,11 @@ public class RelicCommands {
         dispatcher.register(
                 Commands.literal("relic")
                         .then(Commands.literal("reload")
-                                .requires(source -> source.hasPermission(2))
+                                .requires(source -> source.hasPermission(RelicConfigManager.get().commandPermissionLevel))
                                 .executes(ctx -> {
                                     RelicConfigManager.load();
+                                    RelicSpawner.validateDimensions(ctx.getSource().getServer(), RelicConfigManager.get());
+                                    // Maybe do a change later to indicate in addition if the relic config was changed when reloading
                                     ctx.getSource().sendSuccess(
                                             () -> Component.literal("Relic config reloaded."),
                                             true
@@ -29,7 +32,7 @@ public class RelicCommands {
                                 })
                         )
                         .then(Commands.literal("add")
-                                .requires(source -> source.hasPermission(2))
+                                .requires(source -> source.hasPermission(RelicConfigManager.get().commandPermissionLevel))
                                 .then(Commands.argument("tier", StringArgumentType.word())
                                         .executes(ctx -> {
                                             String tier = StringArgumentType.getString(ctx, "tier").toLowerCase();
