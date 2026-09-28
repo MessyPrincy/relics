@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public class RelicConfig {
+    public boolean enableMobLoot = true;
+    public double voidTraceChance = 0.01;
+    public boolean enableVaultLoot = true;
+    public double relicKeyChance = 0.05;
     public int spawnIntervalSeconds = 300;
     public int spawnRadiusMin = 10;
     public int spawnRadiusMax = 40;
