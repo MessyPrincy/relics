@@ -1,23 +1,29 @@
 package dev.messyprincy.spawn;
 
 import dev.messyprincy.Relics;
+import dev.messyprincy.block.ModBlocks;
 import dev.messyprincy.config.RelicConfig;
 import dev.messyprincy.config.RelicConfigManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 
 public class RelicSpawner {
+    private static final Random RANDOM = new Random();
     private static int ticksUntilSpawn;
     private static List<ResourceKey<Level>> validDimensions;
 
@@ -63,12 +69,23 @@ public class RelicSpawner {
         }
 
         List<ServerPlayer> validPlayers = getValidPlayers(server);
+
         if (validPlayers.isEmpty()) {
             Relics.LOGGER.error("No valid players, skipping relic spawn");
             return;
         }
 
-        Relics.LOGGER.info("Spawn relic");
+        RelicConfig config = RelicConfigManager.get();
+        ServerPlayer validPlayer = validPlayers.get(RANDOM.nextInt(validPlayers.size()));
+        ServerLevel level = validPlayer.serverLevel();
+
+        Optional<BlockPos> relicPos = SpawnPositionFinder.find(level, validPlayer.blockPosition(), config.spawnRadiusMin, config.spawnRadiusMax);
+        if (relicPos.isEmpty()) {
+            return;
+        }
+
+        level.setBlock(relicPos.get(), ModBlocks.RELIC.defaultBlockState(), 3);
+        level.scheduleTick(relicPos.get(), ModBlocks.RELIC, config.relicLifeTimeSeconds * 20);
     }
 
     private static boolean validateDimension(MinecraftServer server, ResourceKey<Level> key) {

@@ -10,6 +10,7 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +35,11 @@ public class RelicBlock extends Block {
         super(settings);
 
         registerDefaultState(defaultBlockState().setValue(CHARGE, 0));
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource source) {
+        level.removeBlock(pos, false);
     }
 
     @Override
