@@ -1,0 +1,10 @@
+name: Relics
+version: '${version}'
+main: dev.messyprincy.Relics
+api-version: '26.3'
+author: MessyPrincy
+description: A mod that lets server owners create custom tables of items that players pick up through opening randomly spawning relics
+commands:
+  relic:
+    description: Manage the Relics plugin
+    usage: /relic <reload|add>
