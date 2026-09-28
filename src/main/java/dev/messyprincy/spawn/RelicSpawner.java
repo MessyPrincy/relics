@@ -81,10 +81,14 @@ public class RelicSpawner {
 
         Optional<BlockPos> relicPos = SpawnPositionFinder.find(level, validPlayer.blockPosition(), config.spawnRadiusMin, config.spawnRadiusMax);
         if (relicPos.isEmpty()) {
+            // Maybe remove after testing is done
+            Relics.LOGGER.error("No suitable location found near {}, skipping spawn", validPlayer.getDisplayName());
             return;
         }
 
         level.setBlock(relicPos.get(), ModBlocks.RELIC.defaultBlockState(), 3);
+        // Remove after testing is done
+        Relics.LOGGER.info("Relic spawned at {}", relicPos.get());
         level.scheduleTick(relicPos.get(), ModBlocks.RELIC, config.relicLifeTimeSeconds * 20);
     }
 
