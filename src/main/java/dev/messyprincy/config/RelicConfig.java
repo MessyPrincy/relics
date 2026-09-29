@@ -11,8 +11,8 @@ public class RelicConfig {
     public boolean enableVaultLoot = true;
     public double relicKeyChance = 0.05;
     public int spawnIntervalSeconds = 300;
-    public int spawnRadiusMin = 10;
-    public int spawnRadiusMax = 40;
+    public int spawnRadiusMin = 32;
+    public int spawnRadiusMax = 256;
     public int relicLifeTimeSeconds = 600;
     public List<String> allowedDimensions = new ArrayList<>(List.of("minecraft:overworld"));
     public int commandPermissionLevel = 2;

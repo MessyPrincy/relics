@@ -87,8 +87,6 @@ public class RelicSpawner {
         }
 
         level.setBlock(relicPos.get(), ModBlocks.RELIC.defaultBlockState(), 3);
-        // Remove after testing is done
-        Relics.LOGGER.info("Relic spawned at {}", relicPos.get());
         level.scheduleTick(relicPos.get(), ModBlocks.RELIC, config.relicLifeTimeSeconds * 20);
     }
 
