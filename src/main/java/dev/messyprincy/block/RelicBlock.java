@@ -41,8 +41,6 @@ public class RelicBlock extends Block {
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource source) {
         level.removeBlock(pos, false);
-        // Remove after testing
-        Relics.LOGGER.info("Removed relic from {}", pos);
     }
 
     @Override
