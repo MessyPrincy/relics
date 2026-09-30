@@ -3,20 +3,21 @@ package dev.messyprincy.loot;
 import com.google.gson.JsonElement;
 import dev.messyprincy.Relics;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class LootRoller {
-    private static final Random RANDOM = new Random();
+    private static final RandomSource RANDOM = RandomSource.createNewThreadLocalInstance();
 
-    private static LootTierData rollBestTier(Map<String, Integer> tiers, int grade) {
-        if (grade < 0) {
-            throw new IllegalArgumentException("Grade cannot be lower than 0");
+    private static LootTierData rollBestTier(Map<String, Integer> tiers, int charge) {
+        if (charge < 0) {
+            throw new IllegalArgumentException("Charge cannot be lower than 0");
         }
 
-        String tier = IntStream.range(0, grade++)
+        String tier = IntStream.range(0, (charge + 1))
                 .mapToObj(i -> rollTier(tiers))
                 .min(Comparator.comparingInt(tiers::get))
                 .orElseThrow();
@@ -38,14 +39,14 @@ public class LootRoller {
         throw new IllegalStateException("Tiers do not add up to 100%");
     }
 
-    public static ItemStack rollItem(RegistryOps<JsonElement> registryOps, Map<String, Integer> tiers, int grade) {
-        List<JsonElement> items = rollBestTier(tiers, grade).items;
+    public static ItemStack rollItem(RegistryOps<JsonElement> registryOps, Map<String, Integer> tiers, int charge) {
+        LootTierData tierData = rollBestTier(tiers, charge);
 
-        if (items.isEmpty()) {
+        if (tierData == null || tierData.items == null || tierData.items.isEmpty()) {
             return ItemStack.EMPTY;
         }
 
-        JsonElement chosen = items.get(RANDOM.nextInt(items.size()));
+        JsonElement chosen = tierData.items.get(RANDOM.nextInt(tierData.items.size()));
 
         return ItemStack.CODEC.parse(registryOps, chosen)
                 .resultOrPartial(err -> Relics.LOGGER.error("Failed to decode loot item: {}", err))

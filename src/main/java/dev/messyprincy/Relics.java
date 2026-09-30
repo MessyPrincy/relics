@@ -4,6 +4,7 @@ import dev.messyprincy.block.ModBlocks;
 import dev.messyprincy.command.RelicCommands;
 import dev.messyprincy.config.RelicConfigManager;
 import dev.messyprincy.item.ModItems;
+import dev.messyprincy.loot.LootInjector;
 import dev.messyprincy.registry.ModCreativeTabs;
 import dev.messyprincy.spawn.RelicSpawner;
 import net.fabricmc.api.ModInitializer;
@@ -25,6 +26,7 @@ public class Relics implements ModInitializer {
 		ModItems.initialize();
 		ModCreativeTabs.initialize();
 		RelicSpawner.initialize();
+		LootInjector.initialize();
 
 		CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
 			RelicCommands.register(dispatcher);
